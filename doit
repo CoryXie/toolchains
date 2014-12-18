@@ -106,7 +106,7 @@ for ARCH in $ARCHES; do
     if [ "$ARCH" == "arm" ]; then
         TARGET=arm-eabi
     else
-        TARGET=$ARCH-elf
+        TARGET=$ARCH-linux
     fi
 
     INSTALLPATH=`pwd`/$TARGET-$GCCVER-$OS-$HOSTARCH
@@ -133,7 +133,7 @@ for ARCH in $ARCHES; do
         fi
         mkdir -p $GCCBUILDPATH
         pushd $GCCBUILDPATH &&
-        ../gcc-$GCCVER/configure --target=$TARGET --prefix=$INSTALLPATH --enable-languages=c,c++ $ARCH_OPTIONS --disable-werror &&
+        ../gcc-$GCCVER/configure --target=$TARGET --prefix=$INSTALLPATH --enable-languages=c,c++ $ARCH_OPTIONS --without-headers --disable-threads --disable-nls --disable-multilib --disable-shared  -disable-decimal-float --disable-werror &&
         $MAKE all-gcc $PARALLEL &&
         $MAKE all-target-libgcc $PARALLEL &&
         $MAKE install-gcc &&
