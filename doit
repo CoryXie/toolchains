@@ -37,25 +37,28 @@ fi
 # load GCCVER and BINVER
 . toolvers
 
-if [ "$FETCH" = "1" ]; then
-    if [ ! -f binutils-$BINVER.tar.bz2 ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/binutils/binutils-$BINVER.tar.bz2
-    fi
-    if [ ! -f gcc-$GCCVER.tar.bz2 ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/gcc/gcc-$GCCVER/gcc-$GCCVER.tar.bz2
-    fi
-    if [ ! -f gdb-$GDBVER.tar.xz ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/gdb/gdb-$GDBVER.tar.xz
-    fi
-    if [ ! -f mpfr-$MPFRVER.tar.bz2 ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/mpfr/mpfr-$MPFRVER.tar.bz2
-    fi
-    if [ ! -f mpc-$MPCVER.tar.gz ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/mpc/mpc-$MPCVER.tar.gz
-    fi
-    if [ ! -f gmp-$GMPVER.tar.bz2 ]; then
-        wget -P $ARCHIVES -N $GNU_FTP/gmp/gmp-$GMPVER.tar.bz2
-    fi
+if [ ! -f $ARCHIVES/.fetched-stamp ]; then
+	if [ "$FETCH" = "1" ]; then
+		if [ ! -f binutils-$BINVER.tar.bz2 ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/binutils/binutils-$BINVER.tar.bz2
+		fi
+		if [ ! -f gcc-$GCCVER.tar.bz2 ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/gcc/gcc-$GCCVER/gcc-$GCCVER.tar.bz2
+		fi
+		if [ ! -f gdb-$GDBVER.tar.xz ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/gdb/gdb-$GDBVER.tar.xz
+		fi
+		if [ ! -f mpfr-$MPFRVER.tar.bz2 ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/mpfr/mpfr-$MPFRVER.tar.bz2
+		fi
+		if [ ! -f mpc-$MPCVER.tar.gz ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/mpc/mpc-$MPCVER.tar.gz
+		fi
+		if [ ! -f gmp-$GMPVER.tar.bz2 ]; then
+			wget -P $ARCHIVES -N $GNU_FTP/gmp/gmp-$GMPVER.tar.bz2
+		fi
+	fi
+	touch $ARCHIVES/.fetched-stamp
 fi
 
 function extract-tool()
@@ -88,7 +91,7 @@ function extract-tool()
 if [ ! -f .extracted-stamp ]; then
     extract-tool binutils $BINVER .bz2 binutils-patch.txt
     extract-tool gcc $GCCVER .bz2 gcc-patch.txt
-    extract-tool gdb $GDBVER .xz gdb-patch.txt
+    extract-tool gdb $GDBVER .gz gdb-patch.txt
     extract-tool gmp $GMPVER .bz2
     extract-tool mpc $MPCVER .gz
     extract-tool mpfr $MPFRVER .bz2
